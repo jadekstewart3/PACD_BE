@@ -54,4 +54,13 @@ context "Users API" do
       expect(users[:data][:attributes][:email]).to eq("bob@burgers.com")
     end
   end
+
+  describe "User#Destroy" do
+    it "can destroy an existing user" do
+      delete "/api/v1/users/#{@user[:id]}"
+
+      expect(response).to be_successful
+      expect(User.count).to eq(0)
+    end
+  end
 end
