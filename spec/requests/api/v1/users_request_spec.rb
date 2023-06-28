@@ -36,11 +36,22 @@ context "Users API" do
 
   describe "User#Create" do
     it "can create a new user" do
-      user_params = { name: "Bob Beltcher", email: "burgerbob@bobsburgers.com", password: "buttsbuttsbutts" }
+      user_params = { name: "Bob Beltcher", email: "burgerbob@nabl.com", password: "LouiseISdaBest" }
       post "/api/v1/users", params: user_params
 
       expect(response).to be_successful
       expect(User.count).to eq(2)
+    end
+  end
+
+  describe "User#Update" do
+    it "can update an existing user" do
+      user_params = { email: "bob@burgers.com" }
+      patch "/api/v1/users/#{@user[:id]}", params: user_params
+
+      expect(response).to be_successful
+      users = JSON.parse(response.body, symbolize_names: true)
+      expect(users[:data][:attributes][:email]).to eq("bob@burgers.com")
     end
   end
 end
