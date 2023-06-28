@@ -5,7 +5,7 @@ context "Users API" do
     @user = create(:user)
   end
   
-  describe "GET /api/v1/users" do
+  describe "User#Index" do
     it "returns all users" do
       get "/api/v1/users"
       expect(response).to be_successful
@@ -13,6 +13,23 @@ context "Users API" do
       users = JSON.parse(response.body, symbolize_names: true)
       expect(users[:data].count).to eq(1)
       expect(users[:data][0][:attributes][:name]).to eq(@user.name)
+    end
+  end
+
+  describe "User#Show" do
+    it "returns a single user" do
+      get "/api/v1/users/1"
+      expect(response).to be_successful
+      expect(users[:data].count).to eq(1)
+      expect(users[:data][0][:attributes][:name]).to eq(@user.name)
+
+      user2 = create(:user)
+      get "/api/v1/users/2"
+
+      expect(response).to be_successful
+      expect(users[:data].count).to eq(1)
+      expect(users[:data][0][:attributes][:name]).to eq(user2.name)
+      expect(users[:data][0][:attributes][:name]).to not_eq(@user.name)
     end
   end
 end
