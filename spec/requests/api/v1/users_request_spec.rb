@@ -33,4 +33,14 @@ context "Users API" do
       expect(users[:data][:id]).to eq("#{user2.id}")
     end
   end
+
+  describe "User#Create" do
+    it "can create a new user" do
+      user_params = { name: "Bob Beltcher", email: "burgerbob@bobsburgers.com", password: "buttsbuttsbutts" }
+      post "/api/v1/users", params: user_params
+
+      expect(response).to be_successful
+      expect(User.count).to eq(2)
+    end
+  end
 end
