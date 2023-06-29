@@ -79,5 +79,12 @@ context "Users API" do
       expect(response).to be_successful
       expect(User.count).to eq(0)
     end
+
+    it "returns a 404 if user is not found" do
+      delete "/api/v1/users/99999999999"
+
+      error = JSON.parse(response.body, symbolize_names: true)
+      expect(error[:error]).to eq("Couldn't find User with 'id'=99999999999")
+    end
   end
 end
