@@ -32,6 +32,13 @@ context "Users API" do
       users = JSON.parse(response.body, symbolize_names: true)
       expect(users[:data][:id]).to eq("#{user2.id}")
     end
+
+    it "returns a 404 if user is not found" do
+      get "/api/v1/users/99999999999"
+
+      error = JSON.parse(response.body, symbolize_names: true)
+      expect(error[:error]).to eq("User not found")
+    end
   end
 
   describe "User#Create" do
