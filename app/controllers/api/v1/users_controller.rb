@@ -4,9 +4,7 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def show
-    begin
-      render json: UserSerializer.new(User.find(params[:id]))
-    end
+    render json: UserSerializer.new(User.find(params[:id]))
   end
 
   def create
