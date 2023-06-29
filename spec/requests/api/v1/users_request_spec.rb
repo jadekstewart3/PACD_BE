@@ -37,7 +37,8 @@ context "Users API" do
       get "/api/v1/users/99999999999"
 
       error = JSON.parse(response.body, symbolize_names: true)
-      expect(error[:error]).to eq("User not found")
+      expect(error[:error]).to eq("Couldn't find User with 'id'=99999999999")
+      expect(response.status).to eq(404)
     end
   end
 
