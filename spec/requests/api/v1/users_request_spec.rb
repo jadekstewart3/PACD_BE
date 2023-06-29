@@ -50,6 +50,15 @@ context "Users API" do
       expect(response).to be_successful
       expect(User.count).to eq(2)
     end
+
+    it "returns a 400 if user is not created" do
+      user_params = { name: "Bob Beltcher", email: "burgerbob@nabl.com" }
+      post "/api/v1/users", params: user_params
+
+      error = JSON.parse(response.body, symbolize_names: true)
+      expect(error[:error]).to eq("Validation failed: Password can't be blank")
+      expect(response.status).to eq(400)
+    end
   end
 
   describe "User#Update" do
