@@ -15,4 +15,22 @@ context "Trips API" do
       expect(trips[:data][0][:attributes][:name]).to eq(@trip.name)
     end
   end
+
+  describe "Trip#Show" do
+    it "returns a single trip" do
+      get "/api/v1/trips/#{@trip[:id]}"
+      expect(response).to be_successful
+
+      trips = JSON.parse(response.body, symbolize_names: true)
+      expect(trips[:data][:id]).to eq("#{@trip[:id]}")
+
+      trips2 = create(:trip)
+      get "/api/v1/trips/#{trips2.id}"
+
+      expect(response).to be_successful
+
+      trips = JSON.parse(response.body, symbolize_names: true)
+      expect(trips[:data][:id]).to eq("#{trips2.id}")
+    end
+  end
 end
