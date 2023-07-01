@@ -41,4 +41,23 @@ context "Trips API" do
       expect(response.status).to eq(404)
     end
   end
+
+  describe "Trip#Create" do
+    it "can create a new trip" do
+      trip_params = { name: "The Warf", start_date: "2021-08-01", end_date: "2021-08-10" }
+      post "/api/v1/trips", params: trip_params
+
+      expect(response).to be_successful
+      expect(Trip.count).to eq(2)
+    end
+
+    it "returns a 400 if trip is not created" do
+      trip_params = { start_date: "2021-08-01", end_date: "2021-08-10" }
+      post "/api/v1/trips", params: trip_params
+
+      error = JSON.parse(response.body, symbolize_names: true)
+      expect(error[:error]).to eq("Validation failed: Name can't be blank")
+      expect(response.status).to eq(400)
+    end
+  end
 end
