@@ -60,4 +60,15 @@ context "Trips API" do
       expect(response.status).to eq(400)
     end
   end
+
+  describe "Trip#Update" do
+    it "can update a trip" do
+      trip_params = { name: "The Warf", start_date: "2021-08-01", end_date: "2021-08-10" }
+      patch "/api/v1/trips/#{@trip[:id]}", params: trip_params
+
+      expect(response).to be_successful
+      trip = JSON.parse(response.body, symbolize_names: true)
+      expect(trip[:data][:attributes][:name]).to eq("The Warf")
+    end
+  end
 end

@@ -12,6 +12,10 @@ class Api::V1::TripsController < ApplicationController
     render json: TripSerializer.new(trip)
   end
 
+  def update
+    render json: TripSerializer.new(Trip.update!(params[:id], trip_params))
+  end
+
   private
 
   def trip_params
