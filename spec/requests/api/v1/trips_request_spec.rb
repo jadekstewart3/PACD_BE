@@ -32,5 +32,13 @@ context "Trips API" do
       trips = JSON.parse(response.body, symbolize_names: true)
       expect(trips[:data][:id]).to eq("#{trips2.id}")
     end
+
+    it "returns a 404 if trip is not found" do
+      get "/api/v1/trips/99999999999"
+
+      error = JSON.parse(response.body, symbolize_names: true)
+      expect(error[:error]).to eq("Couldn't find Trip with 'id'=99999999999")
+      expect(response.status).to eq(404)
+    end
   end
 end
