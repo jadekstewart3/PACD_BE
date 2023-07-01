@@ -71,4 +71,20 @@ context "Trips API" do
       expect(trip[:data][:attributes][:name]).to eq("The Warf")
     end
   end
+
+  describe "Trip#Destroy" do
+    it "can destroy a trip" do
+      delete "/api/v1/trips/#{@trip[:id]}"
+
+      expect(response).to be_successful
+      expect(Trip.count).to eq(0)
+    end
+
+    it "returns a 404 if trip is not found" do
+      delete "/api/v1/trips/99999999999"
+
+      error = JSON.parse(response.body, symbolize_names: true)
+      expect(error[:error]).to eq("Couldn't find Trip with 'id'=99999999999")
+    end
+  end
 end
